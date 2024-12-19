@@ -5,7 +5,7 @@ import org.w3c.dom.css.RGBColor;
 import java.awt.*;
 import java.nio.ByteBuffer;
 
-//Seperate PixelfluteData class to better utilise polymorphism
+//Seperate PixelfluteData class to better utilise polymorphism and threads
 public class PixelflutData {
 
     //since we dont want to change it ever so we can parse it on to thread without everything exploding
