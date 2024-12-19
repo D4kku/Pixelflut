@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Pixelflut {        // redraw canvas with a fixed frame rate of ~30fps
 
@@ -25,15 +27,20 @@ public class Pixelflut {        // redraw canvas with a fixed frame rate of ~30f
     private Color color;
 
     public Pixelflut(String host, int port) throws IOException {
-        image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+            image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
         color = new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 
-        // todo set up udp socket
+
         this.socket = new DatagramSocket();
         this.port = port;
         this.address = InetAddress.getByName(host);//this should give me the adress for the given host name
-        // todo receive update packets
 
+        // TODO: redo the thread/the data type since idk how else to get the udp packages also how tf do i get other peoples update
+        //       do i just send a request for every single pixel?????
+        PixelflutImageHandler imageHandler = new PixelflutImageHandler();
+        imageHandler.start();
+
+        //TODO: replace my cursed shit with the inbuild functions
         // pixels can be set using the following method, the Byte.toUnsignedInt()
         // function is used to prevent java to interpret the most significant bit
         // of a byte as the sign of the resulting integer
@@ -81,7 +88,7 @@ public class Pixelflut {        // redraw canvas with a fixed frame rate of ~30f
         Timer timer = new Timer(33, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.getGraphics().drawImage(image, 0, 0, 1024, 1024, frame);
+                frame.getGraphics().drawImage(imageHandler.image, 0, 0, 1024, 1024, frame);
 
             }
         });
