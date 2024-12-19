@@ -11,13 +11,16 @@ public class PixelflutImageHandler extends Thread{
         this.image =new BufferedImage(128, 128,BufferedImage.TYPE_INT_RGB);
     }
 
+
     public void run(){
-        while(true) {
-            updateImage();
-        }
+        updateImage();
     }
 
     private void updateImage(){
+        //this is a busy loop but idc MAYBE make the receive threads wake the handler up
+        while(true) {
+
+        }
 
     }
 

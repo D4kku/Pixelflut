@@ -111,7 +111,11 @@ public class Pixelflut {        // redraw canvas with a fixed frame rate of ~30f
         new Pixelflut(host, port);
     }
 
-    //TODO: split this into a seperate thread
+    //TODO: split the programm in to 3 seperate classes of threads
+    // Each thread class has a Concurrent list of tasks it has to do
+    // The sender threads get a list of pixels it has to send after which it will add the the data to the toBeReceived list
+    // this list will be given to the receiver threads pool which will wait for the response of the server and then give that response to the toBeDrawen List
+    // this list is exclusivly consumed by the pixelflut imageahandler which will update the image accordingly
     public void sendUpdate(byte x, byte y, Color color) throws IOException {
         PixelflutData pixelflutData = new PixelflutData(x,y,color);
         DatagramPacket packet = new DatagramPacket(pixelflutData.getFormatedData(), 0, pixelflutData.getLength(),this.address,this.port);
